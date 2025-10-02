@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.Base64;
 
 public class GeminiAPIClient {
-    private static final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+    private static final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=";
     private final String apiKey;
     private final OkHttpClient client;
     private final Gson gson;
