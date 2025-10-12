@@ -1,0 +1,50 @@
+Java & Maven Build Artifacts
+
+Compiled class files
+*.class
+
+Maven build directory
+target/
+
+Package files
+*.jar *.war *.ear *.zip *.tar.gz *.rar
+
+Maven release files
+pom.xml.tag pom.xml.releaseBackup pom.xml.versionsBackup pom.xml.next release.properties dependency-reduced-pom.xml
+
+Application Specific Files
+
+Local SQLite database file
+expensetracker.db
+
+Log files
+*.log
+
+virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+
+IDE & Editor Configuration
+
+IntelliJ IDEA
+.idea/ *.iml *.iws
+
+Eclipse
+.classpath .project .settings/ bin/
+
+NetBeans
+nbproject/ build/ nbbuild/ dist/ nbdist/ nbactions.xml
+
+VS Code
+.vscode/
+
+Editor backup files
+*~ *.swp
+
+OS Generated Files
+
+macOS
+.DS_Store .AppleDouble .LSOverride
+
+Windows
+Thumbs.db ehthumbs.db Desktop.ini
