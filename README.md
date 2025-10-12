@@ -34,7 +34,7 @@ ai-expense-tracker/
 ```
 # 🚀 Getting Started
 
-Follow these steps to get the project running on your local machine.
+*Follow these steps to get the project running on your local machine.*
 ```bash
 1. Prerequisites
    Java Development Kit (JDK): Version 11 or newer.
