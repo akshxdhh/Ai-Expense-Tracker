@@ -1,8 +1,5 @@
 Java & Maven Build Artifacts
 
-Compiled class files
-*.class
-
 Maven build directory
 target/
 
