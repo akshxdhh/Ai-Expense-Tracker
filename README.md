@@ -36,6 +36,10 @@ ai-expense-tracker/
                     ├── DatabaseHelper.java     # Handles all JDBC/SQLite operations
                     └── ExpenseTrackerApp.java  # Main class with the Swing GUI
 ```
+
+## 🕶 Design
+<img width="784" height="643" alt="Image" src="https://github.com/user-attachments/assets/9584f7f7-d3a6-4f32-9a80-990c9f6e6aca" />
+
 ## 🚀 Getting Started
 
 *Follow these steps to get the project running on your local machine.*
