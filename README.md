@@ -1,7 +1,7 @@
 # AI Expense Tracker
 *Java Swing ProjectA modern desktop expense tracker application built with Java Swing. This app simplifies expense management by allowing users to add expenses manually or by simply uploading a picture of a receipt, which is then automatically processed by the Gemini AI to extract the relevant details.*
 
-# ✨ Features
+## ✨ Features
 
 ⌨ Manual Data Entry: A straightforward interface to add expenses by typing the name, amount, and category.
 
@@ -13,9 +13,13 @@
 
 📊 Clear Expense Table: View all your past expenses in a simple, sortable table.
 
-🛠️ Technology StackCore: Java 11GUI: Java SwingDatabase: SQLite with JDBC DriverAI & Vision: Google Gemini APIBuild & Dependency Management: Apache Maven
+## 🛠️ Technology Stack
+               • Core: Java 11
+               • GUI: Java Swing
+               • Database: SQLite with JDBC Driver
+               • Dependency Management: Apache Maven
 
-# 📂 Project Structure
+## 📂 Project Structure
 
 *The project follows the standard Maven directory layout for clean and organized code:*
 ```bash
@@ -33,37 +37,74 @@ ai-expense-tracker/
                     ├── OpenAiApiService.java   # Manages communication with Gemini API
                     └── ExpenseTrackerApp.java  # Main class with the Swing GUI
 ```
-# 🚀 Getting Started
+## 🚀 Getting Started
 
 *Follow these steps to get the project running on your local machine.*
 ```bash
 1. Prerequisites
-   Java Development Kit (JDK): Version 11 or newer.
-   Apache Maven: Ensure Maven is installed and configured on your system to manage dependencies.
-   IDE (Recommended): An IDE like IntelliJ IDEA, Eclipse, or VS Code with Java support.
-   Google Gemini API Key: You must have an API key from Google AI Studio.
-                          Visit Google AI Studio.
-                          Click on "Get API key" and create a new key.
+   Git: To download the source code. (Download Git)
+   Java Development Kit (JDK): Version 11 or higher. (Download OpenJDK)
+   Apache Maven: To build the project. (Download Maven)
+ ``` 
 
-2. Configuration
-   You must add your Gemini API key to the project before running it.  
-   Navigate to src/main/java/com/expensetracker/OpenAiApiService.java.
-   Find the following line:private static final String API_KEY = "YOUR_API_KEY_HERE";
-   Replace "YOUR_API_KEY_HERE" with your actual Gemini API key.
+## How to Set Up and Run
 
-3. Build & Run (Using an IDE - Easiest Method)
-   Open Project: In your IDE, choose File > Open... and select the project pom.xml file. 
-   Your IDE will automatically detect it as a Maven project and download the necessary dependencies 
-   (like SQLite and JSON parsers).
-   Run Application: Locate the ExpenseTrackerApp.java file, right-click it, and select "Run".
+*You can run this project either directly from an IDE like IntelliJ IDEA or from your computer's command line.*
 
-4. Build & Run (Using the Command Line)Open Terminal: 
-   Navigate to the root directory of the project (ai-expense-tracker/).
-   Build with Maven: Run the package command. 
-   This will compile the code and create a single executable JAR with all dependencies included.mvn clean package
-   Run the JAR: Once the build is successful, run the application using the following command:java -jar target/ai-expense-tracker-1.0.0-jar-with-dependencies.jar
-   The application window should now appear, and an expensetracker.db file will be created in the root directory on the first run.
+Option 1: Running from an IDE (IntelliJ IDEA)
+
+1. Clone the Repository:
+```bash
+git clone [https://github.com/akshxdhh/Ai-Expense-Tracker.git](https://github.com/akshxdhh/Ai-Expense-Tracker.git)
 ```
+2. Open in IntelliJ IDEA:
+      • Launch IntelliJ IDEA.
+      • Select File > Open....
+      • Navigate to the cloned project folder and select the pom.xml file.
+      • Choose "Open as Project".
+
+3. Load Maven Dependencies:
+      • IntelliJ will automatically read the pom.xml file.
+      • If prompted, click "Load Maven Changes" or open the Maven tool window on the right and click the "Reload All Maven Projects" button. This will download the necessary SQLite-JDBC driver.
+
+4. Run the Application:
+      • Navigate to the src/main/java/com/expensetracker folder.
+      • Right-click on the ExpenseTrackerApp.java file and select "Run 'ExpenseTrackerApp.main()'".
+
+# Option 2: Running from the Command Line
+
+**Prerequisites**
+*Before you begin, you must have the following software installed and configured in your system's PATH.*
+      • Git: To download the source code. ([Download Git](https://git-scm.com/downloads))
+      • Java Development Kit (JDK): Version 11 or higher. ([Download OpenJDK](https://adoptium.net/))
+      • Apache Maven: To build the project. ([Download Maven](https://maven.apache.org/download.cgi))
+
+**Steps**
+
+1. Clone the Repository:
+*Open your command prompt, navigate to a directory of your choice, and run:*
+```bash
+git clone [https://github.com/akshxdhh/Ai-Expense-Tracker.git](https://github.com/akshxdhh/Ai-Expense-Tracker.git)
+```
+2. Navigate to the Project Directory:
+```bash
+cd Ai-Expense-Tracker
+```
+
+3. Build the Project:
+*Use Maven to compile the code and package it into a runnable*.jar *file.*
+```bash
+mvn clean package
+```
+You will see a **BUILD SUCCESS** message when it's done. The output file will be located in the **target/** directory.
+
+5. Run the Application:
+*Execute the packaged* .jar *file using the* java *command.*
+```bash
+java -jar target/ai-expense-tracker-1.0.0.jar
+```
+
+The application window should now appear. The expensetracker.db file will be created in the project folder as you add your first expense.
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
