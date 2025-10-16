@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.expensetracker</groupId>
-    <artifactId>ai-expense-tracker</artifactId>
+    <artifactId>expense-tracker</artifactId>
     <version>1.0.0</version>
 
     <properties>
