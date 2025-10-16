@@ -1,5 +1,5 @@
-# AI Expense Tracker
-*Java Swing ProjectA modern desktop expense tracker application built with Java Swing. This app simplifies expense management by allowing users to add expenses manually or by simply uploading a picture of a receipt, which is then automatically processed by the Gemini AI to extract the relevant details.*
+# Expense Tracker
+A simple desktop application built with Java Swing for manually tracking your daily expenses. This project uses JDBC to connect to a local SQLite database, providing a straightforward way to manage your finances without any external dependencies.*
 
 ## ✨ Features
 
