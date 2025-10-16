@@ -86,13 +86,10 @@ public class ExpenseTrackerApp {
     private JPanel createButtonPanel() {
         JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 5, 10));
         JButton addButton = new JButton("Add Expense");
-        JButton scanButton = new JButton("Scan Receipt");
 
         addButton.addActionListener(e -> addExpenseAction());
-        scanButton.addActionListener(e -> scanReceiptAction());
 
         buttonPanel.add(addButton);
-        buttonPanel.add(scanButton);
         return buttonPanel;
     }
 
@@ -123,60 +120,6 @@ public class ExpenseTrackerApp {
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(frame, "Please enter a valid number for the amount.", "Input Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    private void scanReceiptAction() {
-        JFileChooser fileChooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Images (JPG, PNG)", "jpg", "jpeg", "png");
-        fileChooser.setFileFilter(filter);
-
-        int returnValue = fileChooser.showOpenDialog(frame);
-        if (returnValue == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-
-            // Show a loading indicator
-            JDialog loadingDialog = createLoadingDialog();
-
-            // Process in a background thread to keep UI responsive
-            SwingWorker<Expense, Void> worker = new SwingWorker<>() {
-                @Override
-                protected Expense doInBackground() {
-                    return GeminiApiService.analyzeReceipt(selectedFile.toPath());
-                }
-
-                @Override
-                protected void done() {
-                    loadingDialog.dispose();
-                    try {
-                        Expense expense = get();
-                        if (expense != null) {
-                            nameField.setText(expense.getName());
-                            amountField.setText(String.valueOf(expense.getAmount()));
-                            categoryField.setText(expense.getCategory());
-                        } else {
-                            JOptionPane.showMessageDialog(frame, "Could not analyze the receipt.", "API Error", JOptionPane.ERROR_MESSAGE);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        JOptionPane.showMessageDialog(frame, "An error occurred while processing the receipt.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            };
-
-            worker.execute();
-            loadingDialog.setVisible(true); // Show dialog while worker runs
-        }
-    }
-
-    private JDialog createLoadingDialog() {
-        JDialog dialog = new JDialog(frame, "Processing...", true);
-        JLabel label = new JLabel("Analyzing receipt with Gemini AI. Please wait...");
-        label.setBorder(new EmptyBorder(20, 20, 20, 20));
-        dialog.add(label);
-        dialog.pack();
-        dialog.setLocationRelativeTo(frame);
-        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        return dialog;
     }
 
     private void loadExpenses() {

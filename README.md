@@ -29,7 +29,7 @@ ai-expense-tracker/
                 └── expensetracker/
                     ├── Expense.java            # Data model for an expense
                     ├── DatabaseHelper.java     # Handles all JDBC/SQLite operations
-                    ├── GeminiApiService.java   # Manages communication with Gemini API
+                    ├── OpenAiApiService.java   # Manages communication with Gemini API
                     └── ExpenseTrackerApp.java  # Main class with the Swing GUI
 ```
 # 🚀 Getting Started
@@ -46,7 +46,7 @@ ai-expense-tracker/
 
 2. Configuration
    You must add your Gemini API key to the project before running it.  
-   Navigate to src/main/java/com/expensetracker/GeminiApiService.java.
+   Navigate to src/main/java/com/expensetracker/OpenAiApiService.java.
    Find the following line:private static final String API_KEY = "YOUR_API_KEY_HERE";
    Replace "YOUR_API_KEY_HERE" with your actual Gemini API key.
 
