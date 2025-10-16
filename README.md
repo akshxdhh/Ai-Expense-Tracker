@@ -34,7 +34,6 @@ ai-expense-tracker/
                 └── expensetracker/
                     ├── Expense.java            # Data model for an expense
                     ├── DatabaseHelper.java     # Handles all JDBC/SQLite operations
-                    ├── OpenAiApiService.java   # Manages communication with Gemini API
                     └── ExpenseTrackerApp.java  # Main class with the Swing GUI
 ```
 ## 🚀 Getting Started
