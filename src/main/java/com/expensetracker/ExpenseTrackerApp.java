@@ -2,147 +2,165 @@ package com.expensetracker;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.io.File;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
- * The main application class for the AI Expense Tracker.
- * This class builds and displays the main user interface using Java Swing.
+ * The main class for the Manual Expense Tracker application.
+ * This class builds the Swing UI and handles user interactions for manual entry.
  */
-public class ExpenseTrackerApp {
+public class ExpenseTrackerApp extends JFrame {
 
-    private DefaultTableModel tableModel;
-    private JTable expenseTable;
-    private JTextField nameField;
-    private JTextField amountField;
-    private JTextField categoryField;
-    private JFrame frame;
+    private final DefaultTableModel tableModel;
+    private final JTable expenseTable;
+    private final JTextField nameField;
+    private final JTextField amountField;
+    private final JTextField categoryField;
+    private final JLabel totalLabel; // Label to display the total expenses
 
     public ExpenseTrackerApp() {
-        // Initialize the database
+        // --- Initialize Database ---
         DatabaseHelper.initializeDatabase();
-        // Create the main application frame
-        createAndShowGUI();
-    }
 
-    private void createAndShowGUI() {
-        // Set a modern Look and Feel
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // --- Frame Setup ---
+        setTitle("Manual Expense Tracker");
+        setSize(800, 650); // Increased height for the new panel
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(new BorderLayout(10, 10));
 
-        frame = new JFrame("AI Expense Tracker");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
-        frame.setLocationRelativeTo(null); // Center the frame
-
-        // Main panel with BorderLayout
-        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
-        mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        frame.add(mainPanel);
-
-        // --- Input Panel ---
-        mainPanel.add(createInputPanel(), BorderLayout.NORTH);
-
-        // --- Expense Table ---
-        mainPanel.add(createTablePanel(), BorderLayout.CENTER);
-
-        // Load initial data into the table
-        loadExpenses();
-
-        // Display the window.
-        frame.setVisible(true);
-    }
-
-    private JPanel createInputPanel() {
-        JPanel inputPanel = new JPanel(new GridBagLayout());
-        inputPanel.setBorder(BorderFactory.createTitledBorder("Add New Expense"));
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-
-        // Labels and TextFields
-        gbc.gridx = 0; gbc.gridy = 0; inputPanel.add(new JLabel("Name:"), gbc);
-        gbc.gridx = 1; gbc.gridy = 0; nameField = new JTextField(15); inputPanel.add(nameField, gbc);
-
-        gbc.gridx = 0; gbc.gridy = 1; inputPanel.add(new JLabel("Amount:"), gbc);
-        gbc.gridx = 1; gbc.gridy = 1; amountField = new JTextField(15); inputPanel.add(amountField, gbc);
-
-        gbc.gridx = 0; gbc.gridy = 2; inputPanel.add(new JLabel("Category:"), gbc);
-        gbc.gridx = 1; gbc.gridy = 2; categoryField = new JTextField(15); inputPanel.add(categoryField, gbc);
-
-        // Buttons
-        gbc.gridx = 2; gbc.gridy = 0; gbc.gridheight = 3; gbc.fill = GridBagConstraints.BOTH;
-        inputPanel.add(createButtonPanel(), gbc);
-
-        return inputPanel;
-    }
-
-    private JPanel createButtonPanel() {
-        JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 5, 10));
-        JButton addButton = new JButton("Add Expense");
-
-        addButton.addActionListener(e -> addExpenseAction());
-
-        buttonPanel.add(addButton);
-        return buttonPanel;
-    }
-
-    private JScrollPane createTablePanel() {
-        String[] columnNames = {"ID", "Name", "Amount", "Category"};
-        tableModel = new DefaultTableModel(columnNames, 0);
+        // --- Table Setup ---
+        String[] columnNames = {"ID", "Date", "Name", "Amount ($)", "Category"};
+        tableModel = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Make table cells non-editable
+            }
+        };
         expenseTable = new JTable(tableModel);
-        expenseTable.setFillsViewportHeight(true);
-        return new JScrollPane(expenseTable);
-    }
+        JScrollPane scrollPane = new JScrollPane(expenseTable);
+        scrollPane.setBorder(BorderFactory.createTitledBorder("Your Expenses"));
 
-    private void addExpenseAction() {
-        String name = nameField.getText();
-        String amountStr = amountField.getText();
-        String category = categoryField.getText();
+        // --- Input Panel Setup ---
+        JPanel inputPanel = new JPanel(new GridLayout(4, 2, 5, 5));
+        inputPanel.setBorder(BorderFactory.createTitledBorder("Add New Expense"));
+        nameField = new JTextField();
+        amountField = new JTextField();
+        categoryField = new JTextField();
+        inputPanel.add(new JLabel(" Name:"));
+        inputPanel.add(nameField);
+        inputPanel.add(new JLabel(" Amount:"));
+        inputPanel.add(amountField);
+        inputPanel.add(new JLabel(" Category:"));
+        inputPanel.add(categoryField);
+        JButton addButton = new JButton("Add Expense");
+        inputPanel.add(new JLabel()); // Placeholder for layout
+        inputPanel.add(addButton);
 
-        if (name.isEmpty() || amountStr.isEmpty() || category.isEmpty()) {
-            JOptionPane.showMessageDialog(frame, "All fields are required.", "Input Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+        // --- Button Panel Setup ---
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton deleteButton = new JButton("Delete Selected Expense");
+        buttonPanel.add(deleteButton);
 
-        try {
-            double amount = Double.parseDouble(amountStr);
-            Expense expense = new Expense(name, amount, category);
-            DatabaseHelper.addExpense(expense);
-            loadExpenses(); // Refresh table
-            clearInputFields();
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(frame, "Please enter a valid number for the amount.", "Input Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
+        // --- Total Expense Panel ---
+        JPanel totalPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        totalPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        totalLabel = new JLabel("Total Expenses: $0.00");
+        totalLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        totalPanel.add(totalLabel);
 
-    private void loadExpenses() {
-        tableModel.setRowCount(0); // Clear existing data
-        List<Expense> expenses = DatabaseHelper.getAllExpenses();
-        for (Expense expense : expenses) {
-            tableModel.addRow(new Object[]{expense.getId(), expense.getName(), expense.getAmount(), expense.getCategory()});
-        }
-    }
+        // --- Main Panel for Inputs and Buttons ---
+        JPanel southPanel = new JPanel(new BorderLayout());
+        southPanel.add(inputPanel, BorderLayout.NORTH);
+        southPanel.add(buttonPanel, BorderLayout.CENTER);
+        southPanel.add(totalPanel, BorderLayout.SOUTH);
 
-    private void clearInputFields() {
-        nameField.setText("");
-        amountField.setText("");
-        categoryField.setText("");
+        // --- Add components to frame ---
+        ((JPanel) getContentPane()).setBorder(new EmptyBorder(10, 10, 10, 10));
+        add(scrollPane, BorderLayout.CENTER);
+        add(southPanel, BorderLayout.SOUTH);
+
+        // --- Action Listeners ---
+        addButton.addActionListener(e -> addExpenseManually());
+        deleteButton.addActionListener(e -> deleteExpense());
+
+        // --- Load initial data into the table ---
+        refreshExpenseTable();
     }
 
     /**
-     * Main entry point for the application.
+     * Clears the table, reloads all expenses, and updates the total.
      */
+    private void refreshExpenseTable() {
+        tableModel.setRowCount(0); // Clear existing data
+        List<Expense> expenses = DatabaseHelper.getAllExpenses();
+        double total = 0.0;
+        for (Expense expense : expenses) {
+            Object[] row = {
+                    expense.getId(),
+                    expense.getFormattedDate(),
+                    expense.getName(),
+                    expense.getAmount(),
+                    expense.getCategory()
+            };
+            tableModel.addRow(row);
+            total += expense.getAmount();
+        }
+        // Update the total label, formatted to two decimal places
+        totalLabel.setText(String.format("Total Expenses: $%.2f", total));
+    }
+
+    private void addExpenseManually() {
+        try {
+            String name = nameField.getText().trim();
+            String amountStr = amountField.getText().trim();
+            String category = categoryField.getText().trim();
+
+            if (name.isEmpty() || amountStr.isEmpty() || category.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "All fields are required.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            double amount = Double.parseDouble(amountStr);
+            Expense newExpense = new Expense(0, name, amount, category, LocalDate.now());
+            DatabaseHelper.addExpense(newExpense);
+            refreshExpenseTable();
+
+            // Clear input fields
+            nameField.setText("");
+            amountField.setText("");
+            categoryField.setText("");
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid number for the amount.", "Input Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void deleteExpense() {
+        int selectedRow = expenseTable.getSelectedRow();
+        if (selectedRow >= 0) {
+            int id = (int) tableModel.getValueAt(selectedRow, 0);
+            int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this expense?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+            if (confirm == JOptionPane.YES_OPTION) {
+                DatabaseHelper.deleteExpense(id);
+                refreshExpenseTable();
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select an expense from the table to delete.", "No Selection", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
     public static void main(String[] args) {
-        // Schedule a job for the event-dispatching thread:
-        // creating and showing this application's GUI.
-        SwingUtilities.invokeLater(ExpenseTrackerApp::new);
+        SwingUtilities.invokeLater(() -> {
+            try {
+                // Use the system's look and feel for a native appearance
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            new ExpenseTrackerApp().setVisible(true);
+        });
     }
 }
 
