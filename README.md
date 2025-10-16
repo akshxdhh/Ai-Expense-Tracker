@@ -5,8 +5,9 @@
 
 ⌨ Manual Data Entry: A straightforward interface to add expenses by typing the name, amount, and category.
 
-🤖 AI-Powered Receipt Scanning: Upload a receipt image (JPG, PNG) and let the Gemini Vision API automatically  
-extract the expense name, total amount, and a suggested category.
+💯 View All Expenses: See a clear, sortable table of all your past expenses.
+
+🚮 Delete Expenses: Remove expenses you no longer need.
 
 📁 Local Database Storage: All expenses are securely saved in a local SQLite database file (expensetracker.db), making the application self-contained and portable.
 
