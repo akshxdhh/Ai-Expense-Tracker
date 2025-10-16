@@ -105,6 +105,10 @@ java -jar target/ai-expense-tracker-1.0.0.jar
 ```
 
 The application window should now appear. The expensetracker.db file will be created in the project folder as you add your first expense.
+
+> [!WARNING]
+>If you modify the code to change the database structure (e.g., add a new field to `Expense.java`), you must delete the existing `expensetracker.db` file. The application will generate a new, correct database file on the next run.
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first
