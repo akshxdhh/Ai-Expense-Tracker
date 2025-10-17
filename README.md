@@ -54,7 +54,7 @@ ai-expense-tracker/
 
 *You can run this project either directly from an IDE like IntelliJ IDEA or from your computer's command line.*
 
-Option 1: Running from an IDE (IntelliJ IDEA)
+# Option 1: Running from an IDE (IntelliJ IDEA)
 
 1. Clone the Repository:
 ```bash
